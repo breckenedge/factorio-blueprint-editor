@@ -1,6 +1,6 @@
 <img src="./.github/logo.svg" width="100%" align="right">
 
-# factorio-blueprint-editor
+# factorio-blueprint-editor (unmaintained)
 
 [![Website](https://img.shields.io/website-up-down-brightgreen-red/https/fbe.teoxoy.com.svg?style=flat-square)](https://fbe.teoxoy.com)
 [![Discord](https://img.shields.io/discord/540738973413408809.svg?style=flat-square&color=7289da&logo=discord&logoColor=white)](https://discord.gg/c5eXyBU)
