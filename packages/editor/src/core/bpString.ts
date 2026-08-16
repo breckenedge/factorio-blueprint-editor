@@ -238,6 +238,8 @@ function getBlueprintOrBookFromSource(source: string): Promise<Blueprint | Book>
                     return fetchData(`https://www.factorio.school/api/blueprint/${pathParts[1]}`)
                         .then(r => r.json())
                         .then(data => data.blueprintString.blueprintString)
+                case 'factoriobin':
+                    return fetchData(`https://factoriobin.com/${pathParts.join('/')}/blueprint.txt`).then(r => r.text())
                 case 'docs':
                     return fetchData(
                         `https://docs.google.com/document/d/${pathParts[2]}/export?format=txt`
