@@ -1,0 +1,11 @@
+{
+    "total": 82,
+    "perFile": {
+        "packages/editor/src/UI/EntityInfoPanel.ts": 10,
+        "packages/editor/src/containers/OverlayContainer.ts": 4,
+        "packages/editor/src/containers/PaintEntityContainer.ts": 1,
+        "packages/editor/src/containers/UnderlayContainer.ts": 5,
+        "packages/editor/src/core/Entity.ts": 5,
+        "packages/editor/src/core/spriteDataBuilder.ts": 57
+    }
+}

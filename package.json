@@ -10,6 +10,7 @@
         "start:exporter": "cd ./packages/exporter && cargo run --release",
         "build:website": "npm --workspace=@fbe/website run build",
         "type-check": "tsc",
+        "type-check:ratchet": "node scripts/typecheck-ratchet.mjs",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier . --check",
