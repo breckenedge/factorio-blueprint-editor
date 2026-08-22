@@ -14,7 +14,7 @@ A fork of [teoxoy/factorio-blueprint-editor](https://github.com/teoxoy/factorio-
 One PR does one thing. If a task can't be reviewed in a single sitting, it's too big —
 split it and say so rather than opening a sprawling PR.
 
-Never commit or push without being asked. Never force-push. Never merge your own PR.
+Never commit or push without being asked. Never force-push.
 
 ## Verification
 
