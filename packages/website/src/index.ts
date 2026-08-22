@@ -49,17 +49,9 @@ console.log(
 
 const createToast = initToasts()
 
-if (isMobile.any) {
-    createToast({
-        text:
-            'Application is not compatible with mobile devices.<br>' +
-            'If you think this is a mistake, feel free to report this bug on github.',
-        type: 'error',
-        timeout: Infinity,
-    })
-    loadingScreen.el.classList.add('error')
-    throw new Error('MOBILE_DEVICE_NOT_SUPPORTED')
-}
+// Mobile is no longer hard-blocked. The detection is kept as a `mobile` class on
+// <body> so touch-specific UI and layout can hook off it.
+document.body.classList.toggle('mobile', isMobile.any)
 
 if (typeof WebAssembly !== 'object' && typeof WebAssembly.instantiate !== 'function') {
     createToast({
