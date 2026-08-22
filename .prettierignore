@@ -1,2 +1,8 @@
+# Local agent/editor settings, not project source.
+.claude
+
+# Vendored and generated, mirroring the eslint config's ignores.
 packages/editor/src/basis
 packages/exporter
+packages/website/dist
+functions/corsproxy.js

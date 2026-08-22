@@ -239,7 +239,9 @@ function getBlueprintOrBookFromSource(source: string): Promise<Blueprint | Book>
                         .then(r => r.json())
                         .then(data => data.blueprintString.blueprintString)
                 case 'factoriobin':
-                    return fetchData(`https://factoriobin.com/${pathParts.join('/')}/blueprint.txt`).then(r => r.text())
+                    return fetchData(
+                        `https://factoriobin.com/${pathParts.join('/')}/blueprint.txt`
+                    ).then(r => r.text())
                 case 'docs':
                     return fetchData(
                         `https://docs.google.com/document/d/${pathParts[2]}/export?format=txt`
