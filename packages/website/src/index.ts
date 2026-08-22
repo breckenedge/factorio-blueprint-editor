@@ -49,8 +49,7 @@ console.log(
 
 const createToast = initToasts()
 
-// Mobile is no longer hard-blocked. The detection is kept as a `mobile` class on
-// <body> so touch-specific UI and layout can hook off it.
+// Exposes touch/mobile detection to CSS and to UI that needs to branch on it.
 document.body.classList.toggle('mobile', isMobile.any)
 
 if (typeof WebAssembly !== 'object' && typeof WebAssembly.instantiate !== 'function') {
