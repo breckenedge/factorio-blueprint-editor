@@ -28,19 +28,12 @@ import {
     HeatConnection,
     Sprite4Way,
     AccumulatorPrototype,
-    AgriculturalTowerPrototype,
     AmmoTurretPrototype,
     ArithmeticCombinatorPrototype,
     ArtilleryTurretPrototype,
-    ArtilleryWagonPrototype,
     AssemblingMachinePrototype,
-    AsteroidCollectorPrototype,
     BeaconPrototype,
     BoilerPrototype,
-    BurnerGeneratorPrototype,
-    CargoBayPrototype,
-    CargoLandingPadPrototype,
-    CargoWagonPrototype,
     ConstantCombinatorPrototype,
     ContainerPrototype,
     CurvedRailAPrototype,
@@ -50,34 +43,21 @@ import {
     ElectricEnergyInterfacePrototype,
     ElectricPolePrototype,
     ElectricTurretPrototype,
-    ElevatedCurvedRailAPrototype,
-    ElevatedCurvedRailBPrototype,
-    ElevatedHalfDiagonalRailPrototype,
-    ElevatedStraightRailPrototype,
     FluidTurretPrototype,
-    FluidWagonPrototype,
     FurnacePrototype,
-    FusionGeneratorPrototype,
-    FusionReactorPrototype,
     GatePrototype,
     GeneratorPrototype,
     HalfDiagonalRailPrototype,
     HeatInterfacePrototype,
     HeatPipePrototype,
-    InfinityCargoWagonPrototype,
     InfinityContainerPrototype,
     InserterPrototype,
     LabPrototype,
     LampPrototype,
     LandMinePrototype,
-    LaneSplitterPrototype,
     LegacyCurvedRailPrototype,
     LegacyStraightRailPrototype,
-    LightningAttractorPrototype,
-    LinkedBeltPrototype,
-    LinkedContainerPrototype,
     LoaderPrototype,
-    LocomotivePrototype,
     LogisticContainerPrototype,
     MiningDrillPrototype,
     OffshorePumpPrototype,
@@ -85,27 +65,20 @@ import {
     PipeToGroundPrototype,
     PowerSwitchPrototype,
     ProgrammableSpeakerPrototype,
-    ProxyContainerPrototype,
     PumpPrototype,
     RadarPrototype,
-    RailRampPrototype,
     RailSignalBasePrototype,
-    RailSupportPrototype,
     ReactorPrototype,
     RoboportPrototype,
     RocketSiloPrototype,
     SelectorCombinatorPrototype,
     SolarPanelPrototype,
-    SpacePlatformHubPrototype,
     SplitterPrototype,
     StorageTankPrototype,
     StraightRailPrototype,
-    ThrusterPrototype,
     TrainStopPrototype,
     TransportBeltPrototype,
-    TurretPrototype,
     UndergroundBeltPrototype,
-    ValvePrototype,
     WallPrototype,
     RailPrototype,
 } from 'factorio:prototype'
@@ -135,6 +108,9 @@ export interface ExtendedSpriteData extends SpriteData {
     anchorY?: number
     squishY?: number
     rotAngle?: number
+    /** Per-axis scale, overriding `scale`. Both must be set together. */
+    scaleX?: number
+    scaleY?: number
 }
 
 const generatorCache = new Map<string, (data: IDrawData) => readonly ExtendedSpriteData[]>()
@@ -656,32 +632,18 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
     switch (e.type) {
         case 'accumulator':
             return draw_accumulator(e as AccumulatorPrototype)
-        case 'agricultural-tower':
-            return draw_agricultural_tower(e as AgriculturalTowerPrototype)
         case 'ammo-turret':
             return draw_ammo_turret(e as AmmoTurretPrototype)
         case 'arithmetic-combinator':
             return draw_arithmetic_combinator(e as ArithmeticCombinatorPrototype)
         case 'artillery-turret':
             return draw_artillery_turret(e as ArtilleryTurretPrototype)
-        case 'artillery-wagon':
-            return draw_artillery_wagon(e as ArtilleryWagonPrototype)
         case 'assembling-machine':
             return draw_assembling_machine(e as AssemblingMachinePrototype)
-        case 'asteroid-collector':
-            return draw_asteroid_collector(e as AsteroidCollectorPrototype)
         case 'beacon':
             return draw_beacon(e as BeaconPrototype)
         case 'boiler':
             return draw_boiler(e as BoilerPrototype)
-        case 'burner-generator':
-            return draw_burner_generator(e as BurnerGeneratorPrototype)
-        case 'cargo-bay':
-            return draw_cargo_bay(e as CargoBayPrototype)
-        case 'cargo-landing-pad':
-            return draw_cargo_landing_pad(e as CargoLandingPadPrototype)
-        case 'cargo-wagon':
-            return draw_cargo_wagon(e as CargoWagonPrototype)
         case 'constant-combinator':
             return draw_constant_combinator(e as ConstantCombinatorPrototype)
         case 'container':
@@ -696,24 +658,10 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
             return draw_electric_pole(e as ElectricPolePrototype)
         case 'electric-turret':
             return draw_electric_turret(e as ElectricTurretPrototype)
-        case 'elevated-curved-rail-a':
-            return draw_elevated_curved_rail_a(e as ElevatedCurvedRailAPrototype)
-        case 'elevated-curved-rail-b':
-            return draw_elevated_curved_rail_b(e as ElevatedCurvedRailBPrototype)
-        case 'elevated-half-diagonal-rail':
-            return draw_elevated_half_diagonal_rail(e as ElevatedHalfDiagonalRailPrototype)
-        case 'elevated-straight-rail':
-            return draw_elevated_straight_rail(e as ElevatedStraightRailPrototype)
         case 'fluid-turret':
             return draw_fluid_turret(e as FluidTurretPrototype)
-        case 'fluid-wagon':
-            return draw_fluid_wagon(e as FluidWagonPrototype)
         case 'furnace':
             return draw_furnace(e as FurnacePrototype)
-        case 'fusion-generator':
-            return draw_fusion_generator(e as FusionGeneratorPrototype)
-        case 'fusion-reactor':
-            return draw_fusion_reactor(e as FusionReactorPrototype)
         case 'gate':
             return draw_gate(e as GatePrototype)
         case 'generator':
@@ -722,8 +670,6 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
             return draw_heat_interface(e as HeatInterfacePrototype)
         case 'heat-pipe':
             return draw_heat_pipe(e as HeatPipePrototype)
-        case 'infinity-cargo-wagon':
-            return draw_infinity_cargo_wagon(e as InfinityCargoWagonPrototype)
         case 'infinity-container':
             return draw_infinity_container(e as InfinityContainerPrototype)
         case 'inserter':
@@ -734,8 +680,6 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
             return draw_lamp(e as LampPrototype)
         case 'land-mine':
             return draw_land_mine(e as LandMinePrototype)
-        case 'lane-splitter':
-            return draw_lane_splitter(e as LaneSplitterPrototype)
         case 'curved-rail-a':
         case 'curved-rail-b':
         case 'legacy-curved-rail':
@@ -744,17 +688,9 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
         case 'straight-rail':
         case 'legacy-straight-rail':
             return draw_straight_rail(e as RailPrototype)
-        case 'lightning-attractor':
-            return draw_lightning_attractor(e as LightningAttractorPrototype)
-        case 'linked-belt':
-            return draw_linked_belt(e as LinkedBeltPrototype)
-        case 'linked-container':
-            return draw_linked_container(e as LinkedContainerPrototype)
         case 'loader-1x1':
         case 'loader':
             return draw_loader(e as LoaderPrototype)
-        case 'locomotive':
-            return draw_locomotive(e as LocomotivePrototype)
         case 'logistic-container':
             return draw_logistic_container(e as LogisticContainerPrototype)
         case 'mining-drill':
@@ -770,19 +706,13 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
             return draw_power_switch(e as PowerSwitchPrototype)
         case 'programmable-speaker':
             return draw_programmable_speaker(e as ProgrammableSpeakerPrototype)
-        case 'proxy-container':
-            return draw_proxy_container(e as ProxyContainerPrototype)
         case 'pump':
             return draw_pump(e as PumpPrototype)
         case 'radar':
             return draw_radar(e as RadarPrototype)
-        case 'rail-ramp':
-            return draw_rail_ramp(e as RailRampPrototype)
         case 'rail-signal':
         case 'rail-chain-signal':
             return draw_rail_signal_base(e as RailSignalBasePrototype)
-        case 'rail-support':
-            return draw_rail_support(e as RailSupportPrototype)
         case 'reactor':
             return draw_reactor(e as ReactorPrototype)
         case 'roboport':
@@ -793,38 +723,102 @@ function generateGraphics(e: EntityWithOwnerPrototype): (data: IDrawData) => rea
             return draw_selector_combinator(e as SelectorCombinatorPrototype)
         case 'solar-panel':
             return draw_solar_panel(e as SolarPanelPrototype)
-        case 'space-platform-hub':
-            return draw_space_platform_hub(e as SpacePlatformHubPrototype)
         case 'splitter':
             return draw_splitter(e as SplitterPrototype)
         case 'storage-tank':
             return draw_storage_tank(e as StorageTankPrototype)
-        case 'thruster':
-            return draw_thruster(e as ThrusterPrototype)
         case 'train-stop':
             return draw_train_stop(e as TrainStopPrototype)
         case 'transport-belt':
             return draw_transport_belt(e as TransportBeltPrototype)
-        case 'turret':
-            return draw_turret(e as TurretPrototype)
         case 'underground-belt':
             return draw_underground_belt(e as UndergroundBeltPrototype)
-        case 'valve':
-            return draw_valve(e as ValvePrototype)
         case 'wall':
             return draw_wall(e as WallPrototype)
         default:
-            throw new Error(`Missing draw function for: '${e.type}'`)
+            return drawPlaceholder(e)
+    }
+}
+
+/** Frame inside `__core__/graphics/white-square.png`, kept away from the image edge. */
+const PLACEHOLDER_BOX_FRAME = {
+    filename: '__core__/graphics/white-square.png',
+    x: 1,
+    y: 1,
+    width: 8,
+    height: 8,
+} as const
+
+const PLACEHOLDER_BORDER_COLOR = { r: 0.9, g: 0.13, b: 0.65, a: 1 }
+const PLACEHOLDER_FILL_COLOR = { r: 0.1, g: 0.09, b: 0.12, a: 0.85 }
+/** Border thickness of the placeholder box, in pixels at 1x zoom. */
+const PLACEHOLDER_BORDER = 2
+
+const warnedAboutPlaceholder = new Set<string>()
+
+/**
+ * Stand-in graphics for entities the sprite builder has no generator for.
+ *
+ * The prototype is complete apart from its graphics, so the box covers the entity's real
+ * footprint and carries its icon. The magenta frame marks it as a placeholder rather than a
+ * rendered entity.
+ */
+function drawPlaceholder(e: EntityWithOwnerPrototype): (data: IDrawData) => readonly SpriteData[] {
+    if (!warnedAboutPlaceholder.has(e.name)) {
+        warnedAboutPlaceholder.add(e.name)
+        console.warn(`Missing draw function for '${e.type}', drawing '${e.name}' as a placeholder`)
+    }
+
+    // getEntitySize only swaps the axes for cardinal directions, so take the unrotated
+    // footprint and rotate the box instead - that works for diagonals too.
+    const size = getEntitySize(e, 0)
+    const width = size.x * 32
+    const height = size.y * 32
+
+    const iconData = e.icon ? { icon: e.icon, icon_size: e.icon_size } : e.icons?.[0]
+
+    return (data: IDrawData) => {
+        const rotAngle = (data.dir || 0) * 22.5
+
+        const box = (w: number, h: number, tint: ColorWithAlpha): ExtendedSpriteData => ({
+            ...PLACEHOLDER_BOX_FRAME,
+            scaleX: w / PLACEHOLDER_BOX_FRAME.width,
+            scaleY: h / PLACEHOLDER_BOX_FRAME.height,
+            tint,
+            rotAngle,
+        })
+
+        const layers: ExtendedSpriteData[] = [
+            box(width, height, PLACEHOLDER_BORDER_COLOR),
+            box(
+                width - 2 * PLACEHOLDER_BORDER,
+                height - 2 * PLACEHOLDER_BORDER,
+                PLACEHOLDER_FILL_COLOR
+            ),
+        ]
+
+        if (iconData) {
+            const iconSize = iconData.icon_size || e.icon_size || 64
+            const target = Math.max(
+                16,
+                Math.min(64, Math.min(width, height) - 4 * PLACEHOLDER_BORDER)
+            )
+            layers.push({
+                filename: iconData.icon,
+                x: 0,
+                y: 0,
+                width: iconSize,
+                height: iconSize,
+                scale: target / iconSize,
+            })
+        }
+
+        return layers
     }
 }
 
 function draw_accumulator(e: AccumulatorPrototype): (data: IDrawData) => readonly SpriteData[] {
     return () => e.chargable_graphics.picture.layers
-}
-function draw_agricultural_tower(
-    e: AgriculturalTowerPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_ammo_turret(e: AmmoTurretPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => [
@@ -903,11 +897,6 @@ function draw_artillery_turret(
         return [...e.base_picture.layers, barrel, base]
     }
 }
-function draw_artillery_wagon(
-    e: ArtilleryWagonPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_assembling_machine(
     e: AssemblingMachinePrototype
 ): (data: IDrawData) => readonly SpriteData[] {
@@ -946,11 +935,6 @@ function draw_assembling_machine(
             return out
         }
     }
-}
-function draw_asteroid_collector(
-    e: AsteroidCollectorPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_beacon(e: BeaconPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
@@ -1023,22 +1007,6 @@ function draw_boiler(e: BoilerPrototype): (data: IDrawData) => readonly SpriteDa
         }
         return [...patches, ...e.pictures[util.getDirName(data.dir)].structure.layers]
     }
-}
-function draw_burner_generator(
-    e: BurnerGeneratorPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_cargo_bay(e: CargoBayPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_cargo_landing_pad(
-    e: CargoLandingPadPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_cargo_wagon(e: CargoWagonPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_constant_combinator(
     e: ConstantCombinatorPrototype
@@ -1133,47 +1101,14 @@ function draw_electric_turret(
         duplicateAndSetPropertyUsing(e.folded_animation.layers[2], 'y', 'height', data.dir / 4),
     ]
 }
-function draw_elevated_curved_rail_a(
-    e: ElevatedCurvedRailAPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_elevated_curved_rail_b(
-    e: ElevatedCurvedRailBPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_elevated_half_diagonal_rail(
-    e: ElevatedHalfDiagonalRailPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_elevated_straight_rail(
-    e: ElevatedStraightRailPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_fluid_turret(e: FluidTurretPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => [
         ...e.graphics_set.base_visualisation.animation[util.getDirName(data.dir)].layers,
         ...e.folded_animation[util.getDirName(data.dir)].layers,
     ]
 }
-function draw_fluid_wagon(e: FluidWagonPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_furnace(e: FurnacePrototype): (data: IDrawData) => readonly SpriteData[] {
     return () => e.graphics_set.animation.layers
-}
-function draw_fusion_generator(
-    e: FusionGeneratorPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_fusion_reactor(
-    e: FusionReactorPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_gate(e: GatePrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
@@ -1289,11 +1224,6 @@ function draw_heat_pipe(e: HeatPipePrototype): (data: IDrawData) => readonly Spr
         }
         return [util.getRandomItem(e.connection_sprites.single)]
     }
-}
-function draw_infinity_cargo_wagon(
-    e: InfinityCargoWagonPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_infinity_container(
     e: InfinityContainerPrototype
@@ -1432,9 +1362,6 @@ function draw_lamp(e: LampPrototype): (data: IDrawData) => readonly SpriteData[]
 function draw_land_mine(e: LandMinePrototype): (data: IDrawData) => readonly SpriteData[] {
     return () => [e.picture_set]
 }
-function draw_lane_splitter(e: LaneSplitterPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_rail(e: RailPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
         const dir = data.dir
@@ -1492,19 +1419,6 @@ function draw_straight_rail(e: RailPrototype): (data: IDrawData) => readonly Spr
         return getBaseSprites()
     }
 }
-function draw_lightning_attractor(
-    e: LightningAttractorPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_linked_belt(e: LinkedBeltPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
-function draw_linked_container(
-    e: LinkedContainerPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_loader(e: LoaderPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
         const isInput = data.dirType === 'input'
@@ -1561,9 +1475,6 @@ function draw_loader(e: LoaderPrototype): (data: IDrawData) => readonly SpriteDa
 
         return sprites
     }
-}
-function draw_locomotive(e: LocomotivePrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_logistic_container(
     e: LogisticContainerPrototype
@@ -1675,19 +1586,11 @@ function draw_programmable_speaker(
 ): (data: IDrawData) => readonly SpriteData[] {
     return () => e.sprite.layers
 }
-function draw_proxy_container(
-    e: ProxyContainerPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_pump(e: PumpPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => [e.animations[util.getDirName(data.dir)]]
 }
 function draw_radar(e: RadarPrototype): (data: IDrawData) => readonly SpriteData[] {
     return () => e.pictures.layers
-}
-function draw_rail_ramp(e: RailRampPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_rail_signal_base(
     e: RailSignalBasePrototype
@@ -1716,9 +1619,6 @@ function draw_rail_signal_base(
         a = setPropertyUsing(a, 'x', 'width', structure_index)
         return [rp, a]
     }
-}
-function draw_rail_support(e: RailSupportPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_reactor(e: ReactorPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
@@ -1797,11 +1697,6 @@ function draw_selector_combinator(
 function draw_solar_panel(e: SolarPanelPrototype): (data: IDrawData) => readonly SpriteData[] {
     return () => e.picture.layers
 }
-function draw_space_platform_hub(
-    e: SpacePlatformHubPrototype
-): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
-}
 function draw_splitter(e: SplitterPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
         const b0Offset = util.rotatePointBasedOnDir([-0.5, 0], data.dir)
@@ -1841,9 +1736,6 @@ function draw_storage_tank(e: StorageTankPrototype): (data: IDrawData) => readon
             Math.floor(data.dir / 4) % e.pictures.picture.sheets[0].frames
         ),
     ]
-}
-function draw_thruster(e: ThrusterPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_train_stop(e: TrainStopPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {
@@ -1898,9 +1790,6 @@ function draw_transport_belt(
         }
         return [...getBeltSprites(e.belt_animation_set, data.position, data.dir, data.positionGrid)]
     }
-}
-function draw_turret(e: TurretPrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_underground_belt(
     e: UndergroundBeltPrototype
@@ -2006,9 +1895,6 @@ function draw_underground_belt(
 
         return sprites
     }
-}
-function draw_valve(e: ValvePrototype): (data: IDrawData) => readonly SpriteData[] {
-    throw new Error('Not implemented!')
 }
 function draw_wall(e: WallPrototype): (data: IDrawData) => readonly SpriteData[] {
     return (data: IDrawData) => {

@@ -73,7 +73,9 @@ export class EntitySprite extends Sprite {
             this.position.y += data.shift[1] * 32
         }
 
-        if (data.scale) {
+        if (data.scaleX !== undefined && data.scaleY !== undefined) {
+            this.scale.set(data.scaleX, data.scaleY)
+        } else if (data.scale) {
             this.scale.set(data.scale)
         }
 
