@@ -11,6 +11,8 @@
         "build:website": "npm --workspace=@fbe/website run build",
         "type-check": "tsc",
         "type-check:ratchet": "node scripts/typecheck-ratchet.mjs",
+        "test": "vitest run",
+        "test:watch": "vitest",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier . --check",
@@ -18,9 +20,11 @@
     },
     "devDependencies": {
         "@eslint/js": "9.36.0",
+        "@types/node": "22.13.0",
         "eslint": "9.36.0",
         "prettier": "3.6.2",
         "typescript": "5.9.2",
-        "typescript-eslint": "8.44.1"
+        "typescript-eslint": "8.44.1",
+        "vitest": "3.2.4"
     }
 }
