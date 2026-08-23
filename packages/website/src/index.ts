@@ -49,17 +49,8 @@ console.log(
 
 const createToast = initToasts()
 
-if (isMobile.any) {
-    createToast({
-        text:
-            'Application is not compatible with mobile devices.<br>' +
-            'If you think this is a mistake, feel free to report this bug on github.',
-        type: 'error',
-        timeout: Infinity,
-    })
-    loadingScreen.el.classList.add('error')
-    throw new Error('MOBILE_DEVICE_NOT_SUPPORTED')
-}
+// Exposes touch/mobile detection to CSS and to UI that needs to branch on it.
+document.body.classList.toggle('mobile', isMobile.any)
 
 if (typeof WebAssembly !== 'object' && typeof WebAssembly.instantiate !== 'function') {
     createToast({
