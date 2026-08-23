@@ -38,7 +38,7 @@ const TSC_LINE = /^(?<file>[^(]+)\((?<line>\d+),\d+\): error (?<code>TS\d+):/
 const TOOLS = {
     typecheck: {
         baseline: 'typecheck-baseline.json',
-        run: () => exec('npx', ['tsc']),
+        run: () => exec('npx', ['tsc']).combined,
         parse(output) {
             const perFile = {}
             const fatal = []
@@ -62,13 +62,16 @@ const TOOLS = {
     },
     lint: {
         baseline: 'lint-baseline.json',
-        run: () => exec('npx', ['eslint', '.', '--format', 'json']),
+        // stdout only: warnings on stderr would otherwise be appended to the
+        // JSON report and break parsing.
+        run: () => exec('npx', ['eslint', '.', '--format', 'json']).stdout,
         parse(output) {
             const start = output.indexOf('[')
-            if (start === -1) {
+            const end = output.lastIndexOf(']')
+            if (start === -1 || end < start) {
                 return { perFile: {}, fatal: ['eslint produced no JSON report.'] }
             }
-            const report = JSON.parse(output.slice(start))
+            const report = JSON.parse(output.slice(start, end + 1))
             const perFile = {}
             for (const file of report) {
                 if (file.errorCount > 0) {
@@ -88,11 +91,16 @@ const TOOLS = {
 
 function exec(cmd, args) {
     try {
-        return execFileSync(cmd, args, { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' })
+        const stdout = execFileSync(cmd, args, { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' })
+        return { stdout, stderr: '', combined: stdout }
     } catch (err) {
         // Both tools exit non-zero whenever they report anything; the output is
-        // the payload, not a failure to run.
-        return `${err.stdout ?? ''}${err.stderr ?? ''}`
+        // the payload, not a failure to run. Kept separate because a tool
+        // emitting structured output on stdout can have unrelated warnings on
+        // stderr, and concatenating the two corrupts the report.
+        const stdout = err.stdout ?? ''
+        const stderr = err.stderr ?? ''
+        return { stdout, stderr, combined: `${stdout}${stderr}` }
     }
 }
 
