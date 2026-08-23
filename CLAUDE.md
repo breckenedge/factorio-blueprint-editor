@@ -18,28 +18,33 @@ Never commit or push without being asked. Never force-push.
 
 ## Verification
 
-There are **no tests** in this repo — no `.test.ts`, no `.spec.ts`, nothing. Do not claim a
-change is "tested."
-
-`npm run build:website` uses Vite, which **strips types without checking them**. A green build
-says nothing about type correctness. Run both:
+Run one command:
 
 ```
-npm run type-check      # tsc
-npm run lint            # eslint
-npm run build:website   # vite
+npm run check   # prettier + lint ratchet + typecheck ratchet + vitest
 ```
 
-`type-check` is **not clean on master** — it reports 82 pre-existing errors, concentrated in
-`packages/editor/src/core/spriteDataBuilder.ts` (57), `UI/EntityInfoPanel.ts` (10),
-`core/Entity.ts` (5), `containers/UnderlayContainer.ts` (5), `containers/OverlayContainer.ts` (4),
-`containers/PaintEntityContainer.ts` (1). Compare the **count and the affected files** against
-that baseline; don't try to reach zero, and don't report the pre-existing errors as if the
-change caused them.
+It is the gate every change clears before you call it done. `npm run build:website` is separate,
+and note that Vite **strips types without checking them** — a green build says nothing about
+type correctness.
 
-Since the type-checker is already red and there is no test suite, there is no automated signal
-that a change to pointer handling, `EditorMode`, or viewport logic still works. Say so plainly
-instead of implying a change is verified.
+Both eslint and tsc carry a backlog on `master`: **94 lint errors** across 15 files, and
+**82 type errors** concentrated in `packages/editor/src/core/spriteDataBuilder.ts` (57). Neither
+can reach zero without a large cleanup, so both go through `scripts/ratchet.mjs`, which compares
+per-file counts against `lint-baseline.json` and `typecheck-baseline.json` and fails only on an
+increase. Don't try to reach zero, and don't report the pre-existing problems as if a change
+caused them. If a change genuinely reduces a count, the ratchet says so — lock it in with
+`npm run lint:ratchet -- --update` or the typecheck equivalent.
+
+The ratchets also fail outright when a checker didn't actually inspect anything — tsc aborting on
+`TS2688`, or eslint matching no files. Both produce a low error count that reads as a large
+improvement, so treat "the check did not run" as a broken toolchain, never as progress.
+
+Tests live next to their subjects as `*.test.ts` and cover `History`, `PositionGrid`, and the
+blueprint-string round-trip. Coverage stops there: **nothing tests the Pixi containers, the
+`EditorMode` state machine, or viewport logic**, which is most of what the mobile work touches.
+When a change lands in untested territory, say so plainly rather than implying `npm run check`
+verified it.
 
 ## Layout
 
