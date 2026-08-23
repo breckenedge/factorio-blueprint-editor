@@ -1,0 +1,20 @@
+{
+    "total": 94,
+    "perFile": {
+        "packages/editor/src/UI/controls/Dialog.ts": 2,
+        "packages/editor/src/UI/controls/functions.ts": 2,
+        "packages/editor/src/UI/editors/factory.ts": 1,
+        "packages/editor/src/actions.ts": 1,
+        "packages/editor/src/common/util.ts": 1,
+        "packages/editor/src/containers/BlueprintContainer.ts": 1,
+        "packages/editor/src/containers/PaintBlueprintContainer.ts": 1,
+        "packages/editor/src/containers/PaintEntityContainer.ts": 2,
+        "packages/editor/src/containers/PaintTileContainer.ts": 3,
+        "packages/editor/src/containers/PaintWireContainer.ts": 3,
+        "packages/editor/src/containers/TileContainer.ts": 2,
+        "packages/editor/src/containers/WiresContainer.ts": 1,
+        "packages/editor/src/core/Entity.ts": 2,
+        "packages/editor/src/core/factorioData.ts": 33,
+        "packages/editor/src/core/spriteDataBuilder.ts": 39
+    }
+}

@@ -10,13 +10,15 @@
         "start:exporter": "cd ./packages/exporter && cargo run --release",
         "build:website": "npm --workspace=@fbe/website run build",
         "type-check": "tsc",
-        "type-check:ratchet": "node scripts/typecheck-ratchet.mjs",
+        "type-check:ratchet": "node scripts/ratchet.mjs typecheck",
         "test": "vitest run",
         "test:watch": "vitest",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "lint:ratchet": "node scripts/ratchet.mjs lint",
         "format": "prettier . --check",
-        "format:fix": "prettier . --write"
+        "format:fix": "prettier . --write",
+        "check": "npm run format && npm run lint:ratchet && npm run type-check:ratchet && npm test"
     },
     "devDependencies": {
         "@eslint/js": "9.36.0",

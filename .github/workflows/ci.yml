@@ -27,15 +27,12 @@ jobs:
       - name: Format
         run: npm run format
 
-      # 94 pre-existing errors on master, separate from the type backlog.
-      # Reported but not blocking until they are triaged or ratcheted.
-      - name: Lint (non-blocking)
-        run: npm run lint
-        continue-on-error: true
+      # Both checks compare per-file counts against a recorded baseline and
+      # fail on an increase, since master carries a backlog in each. They also
+      # fail outright when the checker did not actually inspect anything.
+      - name: Lint
+        run: npm run lint:ratchet
 
-      # Compares per-file error counts against typecheck-baseline.json.
-      # Fails on an increase, and on errors that stop tsc before it
-      # checks anything.
       - name: Type-check
         run: npm run type-check:ratchet
 
