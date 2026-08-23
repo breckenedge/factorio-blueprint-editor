@@ -1,5 +1,5 @@
 {
-    "total": 94,
+    "total": 67,
     "perFile": {
         "packages/editor/src/UI/controls/Dialog.ts": 2,
         "packages/editor/src/UI/controls/functions.ts": 2,
@@ -15,6 +15,6 @@
         "packages/editor/src/containers/WiresContainer.ts": 1,
         "packages/editor/src/core/Entity.ts": 2,
         "packages/editor/src/core/factorioData.ts": 33,
-        "packages/editor/src/core/spriteDataBuilder.ts": 39
+        "packages/editor/src/core/spriteDataBuilder.ts": 12
     }
 }
